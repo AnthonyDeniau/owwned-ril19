@@ -18,16 +18,16 @@ class Status(Enum):
 class InventorySession(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    manager = models.ForeignKey(User, on_delete=models.SET_NULL)
+    manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 class InventoryItem(models.Model):
-    inventory_session = models.ForeignKey(InventorySession)
+    inventory_session = models.ForeignKey(InventorySession, on_delete=models.RESTRICT)
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
-    inventorist = models.ForeignKey(User, on_delete=models.SET_NULL)
+    inventorist = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     date = models.DateTimeField()
     comment = models.TextField()
     status = models.CharField(max_length=255, choices=Status.choices())
 
 class Inventory(models.Model):
-    invetory_session = models.OneToOneField(InventorySession)
-    inventory_item = models.OneToOneField(InventoryItem)
+    invetory_session = models.OneToOneField(InventorySession, on_delete=models.CASCADE)
+    inventory_item = models.OneToOneField(InventoryItem, on_delete=models.CASCADE)
