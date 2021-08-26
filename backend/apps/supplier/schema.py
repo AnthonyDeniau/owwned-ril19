@@ -63,7 +63,31 @@ class DeleteSupplierMutation(graphene.Mutation):
         # Notice we return an instance of this mutation
         return DeleteSupplierMutation(deleted=deleted)
 
+class UpdateSupplierMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        name = graphene.String(required=False)
+        website = graphene.String(required=False)
+        login = graphene.String(required=False)
+        password = graphene.String(required=False)
+        id = graphene.ID()
+
+    # The class attributes define the response of the mutation
+    supplier = graphene.Field(SupplierType)
+
+    @classmethod
+    def mutate(cls, root, info, id, name, website, login, password):
+        supplier = Supplier.objects.get(pk=id)
+        supplier.name = name
+        supplier.website = website
+        supplier.login = login
+        supplier.password = password
+        supplier.save()
+        # Notice we return an instance of this mutation
+        return UpdateSupplierMutation(supplier=supplier)
+
 
 class Mutation(graphene.ObjectType):
     create_supplier = CreateSupplierMutation.Field()
+    update_supplier = UpdateSupplierMutation.Field()
     delete_supplier = DeleteSupplierMutation.Field()
