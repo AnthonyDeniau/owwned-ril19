@@ -29,9 +29,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.team', 'apps.userprofile', 'apps.organization', 'django.contrib.admin', 'django.contrib.auth',
-    'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'graphene_django'
+    'apps.team',
+    'apps.userprofile',
+    'apps.organization',
+    'apps.asset',
+    'apps.inventory',
+    'apps.supplier',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
