@@ -21,7 +21,7 @@ class InventorySession(models.Model):
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     
     def __str__(self) -> str:
-        return f"{self.start_date} - {self.end_date} - {self.manager}"
+        return f"{self.start_date.date()} -> {self.end_date.date()} : {self.manager}"
 
 class InventoryItem(models.Model):
     inventory_session = models.ForeignKey(InventorySession, on_delete=models.RESTRICT)
@@ -32,11 +32,11 @@ class InventoryItem(models.Model):
     status = models.CharField(max_length=255, choices=Status.choices())
 
     def __str__(self) -> str:
-        return f"{self.inventory_session} - {self.asset} - {self.inventorist} - {self.date} - {self.comment} - {self.status}"
+        return f"{self.asset} : {self.status} ( {self.date.date()} )"
 
 class Inventory(models.Model):
     invetory_session = models.OneToOneField(InventorySession, on_delete=models.CASCADE)
     inventory_item = models.OneToOneField(InventoryItem, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return str(self.invetory_session) + " " + str(self.inventory_item)
+        return f"{self.inventory_item.asset}-> {self.invetory_session.end_date} : {self.inventory_item.status}"
