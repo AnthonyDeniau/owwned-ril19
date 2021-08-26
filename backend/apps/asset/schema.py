@@ -27,6 +27,12 @@ class CreateAssetMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
         name = graphene.String(required=True)
+        description = graphene.Text(required=True)
+        picture = graphene.Text(required=True)
+        cost = graphene.Float(required=True)
+        suplier = graphene
+        team = graphene
+
 
     # The class attributes define the response of the mutation
     asset = graphene.Field(AssetType)
