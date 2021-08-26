@@ -1,6 +1,6 @@
 from django.db import models
-from .models import Team
-from .models import Supplier
+""" from ..team.models import Team
+from ..supplier.models import Supplier """
 
 # Create your models here.
 class Asset(models.Model):
@@ -9,8 +9,8 @@ class Asset(models.Model):
     description = models.TextField()
     picture = models.TextField()
     cost = models.DecimalField()
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    """ supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE) """
 
     def __str__(self):
         return self.name,self.description,self.picture,self.cost,self.supplier,self.team
