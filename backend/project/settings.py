@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'apps.team',
+    'apps.userprofile',
     'apps.organization',
     'apps.asset',
     'apps.inventory',
