@@ -12,5 +12,5 @@ class Asset(models.Model):
     """ supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE) """
 
-    def __str__(self):
-        return self.name,self.description,self.picture,self.cost
+    def __str__(self) -> str:
+        return f" {self.name}    |   {self.cost} "
