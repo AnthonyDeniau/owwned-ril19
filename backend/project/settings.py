@@ -29,14 +29,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.organization', 
+    'apps.organization',
+    'apps.asset',
+    'apps.inventory',
     'apps.supplier',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes', 
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages', 
-    'django.contrib.staticfiles', 
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'graphene_django'
 ]
 
