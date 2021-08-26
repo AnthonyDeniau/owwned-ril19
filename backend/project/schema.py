@@ -6,4 +6,8 @@ class Query(organization_schema.Query, graphene.ObjectType):
     hello = graphene.String(default_value="Hi!")
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(organization_schema.Mutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
