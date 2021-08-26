@@ -1,4 +1,5 @@
 from django.db import models
+from .models import Team
 
 # Create your models here.
 class Asset(models.Model):
@@ -9,7 +10,7 @@ class Asset(models.Model):
     cost = models.DecimalField()
     supplier = models.CharField()
 
-    # team = models.ForeignKey
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name,self.description,self.picture,self.cost,self.supplier
