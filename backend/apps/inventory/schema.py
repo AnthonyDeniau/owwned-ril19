@@ -10,9 +10,8 @@ class InventoryType(DjangoObjectType):
         model = Inventory
 
 class Query(graphene.ObjectType):
-    inventory = graphene.Field(InventoryType,
-                                  id=graphene.ID(required=True))
-    inventorys = graphene.List(InventoryType)
+    inventory = graphene.Field(InventoryType,id=graphene.ID(required=True))
+    inventories = graphene.List(InventoryType)
 
     def resolve_inventory(root, info, id):
         try:
@@ -20,7 +19,7 @@ class Query(graphene.ObjectType):
         except InventoryType.DoesNotExist:
             return None
 
-    def resolve_inventorys(root, info):
+    def resolve_inventories(root, info):
         return InventoryType.objects.all()
 
 class CreateInventoryMutation(graphene.Mutation):
