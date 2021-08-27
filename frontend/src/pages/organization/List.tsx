@@ -1,7 +1,7 @@
 import {
   Box,
-  List,
-  ListItem,
+  /*List,
+  ListItem,*/
   Table,
   TableCaption,
   Tbody,
