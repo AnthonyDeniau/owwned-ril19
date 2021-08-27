@@ -10,9 +10,8 @@ class InventoryType(DjangoObjectType):
         model = Inventory
 
 class Query(graphene.ObjectType):
-    inventory = graphene.Field(InventoryType,
-                                  id=graphene.ID(required=True))
-    inventorys = graphene.List(InventoryType)
+    inventory = graphene.Field(InventoryType,id=graphene.ID(required=True))
+    inventories = graphene.List(InventoryType)
 
     def resolve_inventory(root, info, id):
         try:
@@ -20,7 +19,7 @@ class Query(graphene.ObjectType):
         except InventoryType.DoesNotExist:
             return None
 
-    def resolve_inventorys(root, info):
+    def resolve_inventories(root, info):
         return InventoryType.objects.all()
 
 class CreateInventoryMutation(graphene.Mutation):
@@ -56,6 +55,25 @@ class DeleteInventoryMutation(graphene.Mutation):
             deleted = False
         # Notice we return an instance of this mutation
         return DeleteInventoryMutation(deleted=deleted)
+
+
+
+class UpdateInventoryMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        invetory_session = InventorySession(required=True)
+        inventory_item = InventoryItem(required=True)
+    
+    inventory = graphene.Field(InventoryType)
+
+    @classmethod
+    def mutate(cls, root, info, id, invetory_session, inventory_item):
+        inventory = Inventory.objects.get(pk=id)
+        inventory.invetory_session = invetory_session
+        inventory.inventory_item = inventory_item
+        inventory.save()
+        # Notice we return an instance of this mutation
+        return UpdateInventoryMutation(inventory=inventory)
 
 class Mutation(graphene.ObjectType):
     create_organization = CreateInventoryMutation.Field()

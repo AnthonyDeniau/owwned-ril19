@@ -2,8 +2,8 @@ from graphene.types import interface
 from graphene_django import DjangoObjectType
 import graphene
 from .models import Asset
-""" from ..supplier.schema import SupplierType
-from ..team.schema import TeamType """
+from ..supplier.schema import SupplierType
+# from ..team.schema import TeamType
 
 
 class AssetType(DjangoObjectType):
@@ -32,8 +32,8 @@ class CreateAssetMutation(graphene.Mutation):
         description = graphene.String(required=True)
         picture = graphene.String(required=True)
         cost = graphene.Float(required=True)
-        """ suplier = graphene.Field(SupplierType)
-        team = graphene.Field(TeamType) """
+        suplier = graphene.Field(SupplierType)
+        # team = graphene.Field(TeamType)
 
 
     # The class attributes define the response of the mutation
@@ -65,7 +65,36 @@ class DeleteAssetMutation(graphene.Mutation):
         # Notice we return an instance of this mutation
         return DeleteAssetMutation(deleted=deleted)
 
+class UpdateAssetMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        name = graphene.String(required=True)
+        description = graphene.String(required=True)
+        picture = graphene.String(required=True)
+        cost = graphene.Float(required=True)
+        suplier = graphene.Field(SupplierType)
+        # team = graphene.Field(TeamType)
+    
+    asset = graphene.Field(AssetType)
+
+    @classmethod
+    def mutate(cls, root, info, id, name, description, picture, cost, supplier, team):
+        asset = Asset.objects.get(pk=id)
+        asset.name = name
+        asset.description = description
+        asset.picture = picture
+        asset.cost = cost
+        asset.supplier = supplier
+        asset.team = team
+        asset.save()
+        # Notice we return an instance of this mutation
+        return UpdateAssetMutation(asset=asset)
+
+
+
 
 class Mutation(graphene.ObjectType):
     create_asset = CreateAssetMutation.Field()
+    update_asset = UpdateAssetMutation.Field()
     delete_asset = DeleteAssetMutation.Field()
+
