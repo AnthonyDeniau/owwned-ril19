@@ -7,6 +7,7 @@ from .models import Asset
 class AssetType(DjangoObjectType):
     class Meta:
         model = Asset
+        fields = "__all__"
 
 
 class Query(graphene.ObjectType):
@@ -27,11 +28,11 @@ class CreateAssetMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
         name = graphene.String(required=True)
-        description = graphene.Text(required=True)
-        picture = graphene.Text(required=True)
+        description = graphene.String(required=True)
+        picture = graphene.String(required=True)
         cost = graphene.Float(required=True)
-        suplier = graphene
-        team = graphene
+        suplier = graphene.ID(required=True)
+        team = graphene.ID(required=True)
 
 
     # The class attributes define the response of the mutation

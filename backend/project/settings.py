@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'apps.userprofile',
     'apps.organization',
     'apps.asset',
+    # 'apps.team',
     'apps.inventory',
     'apps.supplier',
     'django.contrib.admin',
