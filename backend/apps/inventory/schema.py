@@ -1,4 +1,3 @@
-from typing_extensions import Required
 from graphene.types import interface
 from graphene_django import DjangoObjectType
 import graphene
@@ -15,25 +14,25 @@ class Query(graphene.ObjectType):
 
     def resolve_inventory(root, info, id):
         try:
-            return InventoryType.objects.get(id=id)
-        except InventoryType.DoesNotExist:
+            return Inventory.objects.get(id=id)
+        except Inventory.DoesNotExist:
             return None
 
     def resolve_inventories(root, info):
-        return InventoryType.objects.all()
+        return Inventory.objects.all()
 
 class CreateInventoryMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        invetory_session = InventorySession(required=True)
-        inventory_item = InventoryItem(required=True)
+        invetory_session_id = graphene.ID(required=True)
+        inventory_item_id = graphene.ID(required=True)
 
     # The class attributes define the response of the mutation
     inventory = graphene.Field(InventoryType)
 
     @classmethod
-    def mutate(cls, root, info, invetory_session, inventory_item):
-        inventory = Inventory.objects.create(invetory_session=invetory_session, inventory_item=inventory_item)
+    def mutate(cls, root, info, invetory_session_id, inventory_item_id):
+        inventory = Inventory.objects.create(invetory_session_id=invetory_session_id, inventory_item_id=inventory_item_id)
         # Notice we return an instance of this mutation
         return CreateInventoryMutation(inventory=inventory)
 
@@ -61,20 +60,23 @@ class DeleteInventoryMutation(graphene.Mutation):
 class UpdateInventoryMutation(graphene.Mutation):
     class Arguments:
         # The input arguments for this mutation
-        invetory_session = InventorySession(required=True)
-        inventory_item = InventoryItem(required=True)
+
+        invetory_session_id = graphene.ID(required=True)
+        inventory_item_id = graphene.ID(required=True)
+        id = graphene.ID()
     
     inventory = graphene.Field(InventoryType)
 
     @classmethod
-    def mutate(cls, root, info, id, invetory_session, inventory_item):
+    def mutate(cls, root, info, id, invetory_session_id, inventory_item_id):
         inventory = Inventory.objects.get(pk=id)
-        inventory.invetory_session = invetory_session
-        inventory.inventory_item = inventory_item
+        inventory.invetory_session_id = invetory_session_id
+        inventory.inventory_item_id = inventory_item_id
         inventory.save()
         # Notice we return an instance of this mutation
         return UpdateInventoryMutation(inventory=inventory)
 
 class Mutation(graphene.ObjectType):
-    create_organization = CreateInventoryMutation.Field()
-    delete_organization = DeleteInventoryMutation.Field()
+    create_inventory = CreateInventoryMutation.Field()
+    delete_inventory = DeleteInventoryMutation.Field()
+    update_inventory = UpdateInventoryMutation.Field()
