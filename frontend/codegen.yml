@@ -1,0 +1,17 @@
+overwrite: true
+schema: "src/schema.json"
+documents: "src/graphql/*.ts"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      apolloReactCommonImportFrom: "@apollo/client"
+      apolloReactComponentsImportFrom: "@apollo/client"
+      apolloReactHooksImportFrom: "@apollo/client"
+      skipTypename: false
+      withHooks: true
+      withHOC: false
+      withComponent: false

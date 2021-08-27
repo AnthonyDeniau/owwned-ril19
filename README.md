@@ -45,3 +45,9 @@ python manage.py runserver
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+### Update Frontend Graphql Schema
+
+```bash
+python manage.py graphql_schema --out ../frontend/src/schema.json
+```

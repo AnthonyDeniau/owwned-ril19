@@ -56,6 +56,29 @@ class DeleteUserProfileMutation(graphene.Mutation):
         # Notice we return an instance of this mutation
         return DeleteUserProfileMutation(deleted=deleted)
 
+class UpdateUserProfileMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        id = graphene.ID(required=True)
+        user_id = graphene.ID(required=True)
+        team_id = graphene.ID(required=True)
+
+    
+    user_profile = graphene.Field(UserProfileType)
+
+    @classmethod
+    def mutate(cls, root, info, id,user_id, team_id):
+        user_profile = UserProfile.objects.get(pk=id)
+        user_profile.user_id = user_id
+        user_profile.team_id = team_id
+        
+
+
+        user_profile.save()
+        # Notice we return an instance of this mutation
+        return UpdateUserProfileMutation(user_profile=user_profile)
+
 class Mutation(graphene.ObjectType):
     create_user_profile = CreateUserProfileMutation.Field()
     delete_user_profile = DeleteUserProfileMutation.Field()
+    update_user_profile = UpdateUserProfileMutation.Field()

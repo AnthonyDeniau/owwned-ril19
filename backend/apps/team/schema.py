@@ -62,8 +62,27 @@ class DeleteTeamMutation(graphene.Mutation):
             deleted = False
         # Notice we return an instance of this mutation
         return DeleteTeamMutation(deleted=deleted)
+
+class UpdateTeamMutation(graphene.Mutation):
+    class Arguments:
+        # The input arguments for this mutation
+        id = graphene.ID(required=True)
+        name = graphene.String(required=True)
+        manager_id = graphene.ID(required=True)
+
+    team = graphene.Field(TeamType)
+
+    @classmethod
+    def mutate(cls, root, info, id,name,manager_id):
+        team = Team.objects.get(pk=id)
+        team.name = name
+        team.manager_id = manager_id
+        team.save()
+        # Notice we return an instance of this mutation
+        return UpdateTeamMutation(team=team)
     
 
 class Mutation(graphene.ObjectType):
     create_team = CreateTeamMutation.Field()
     delete_team = DeleteTeamMutation.Field()
+    update_team = UpdateTeamMutation.Field()
