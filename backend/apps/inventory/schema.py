@@ -1,4 +1,3 @@
-from graphene.types import interface
 from graphene_django import DjangoObjectType
 import graphene
 from .models import Inventory, InventoryItem, InventorySession

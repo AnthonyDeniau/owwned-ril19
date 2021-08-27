@@ -1,7 +1,7 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import "./App.css";
-import { OrganizationList } from "./pages/organization/List";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { AssetTeamList } from "./pages/asset/TeamList";
 
 export const client = new ApolloClient({
   uri: "/graphql/",
@@ -12,7 +12,7 @@ function App() {
   return (
     <ChakraProvider>
       <ApolloProvider client={client}>
-        <OrganizationList />
+        <AssetTeamList />
       </ApolloProvider>
     </ChakraProvider>
   );
