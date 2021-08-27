@@ -27,7 +27,7 @@ jobs:
       run: python manage.py test
       working-directory: ${{env.backend-directory}}
 
-   build-frontend:
+  build-frontend:
 
     runs-on: ubuntu-latest
     env:
