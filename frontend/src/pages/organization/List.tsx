@@ -15,8 +15,8 @@ import { useGetOrgsQuery } from "../../generated/graphql";
 
 export const OrganizationList = () => {
   const { data, error } = useGetOrgsQuery();
-  console.log(error?.message);
-  console.log(data);
+  /*console.log(error?.message);
+  console.log(data);*/
   return (
     <Box padding="200px">
       <Table variant="simple">
