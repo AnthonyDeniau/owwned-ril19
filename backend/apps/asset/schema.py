@@ -2,8 +2,7 @@ from graphene.types import interface
 from graphene_django import DjangoObjectType
 import graphene
 from .models import Asset
-from ..supplier.schema import SupplierType
-# from ..team.schema import TeamType
+
 
 
 class AssetType(DjangoObjectType):
@@ -32,16 +31,16 @@ class CreateAssetMutation(graphene.Mutation):
         description = graphene.String(required=True)
         picture = graphene.String(required=True)
         cost = graphene.Float(required=True)
-        suplier = graphene.Field(SupplierType)
-        # team = graphene.Field(TeamType)
+        supplier_id = graphene.ID(required=True)
+        team_id = graphene.ID(required=True)
 
 
     # The class attributes define the response of the mutation
     asset = graphene.Field(AssetType)
 
     @classmethod
-    def mutate(cls, root, info, name, description, picture, cost, supplier, team):
-        asset = Asset.objects.create(name=name, description=description, picture=picture, cost=cost, supplier=supplier, team=team)
+    def mutate(cls, root, info, name, description, picture, cost, supplier_id, team_id):
+        asset = Asset.objects.create(name=name, description=description, picture=picture, cost=cost, supplier_id=supplier_id, team_id=team_id)
         # Notice we return an instance of this mutation
         return CreateAssetMutation(asset=asset)
 
@@ -72,20 +71,21 @@ class UpdateAssetMutation(graphene.Mutation):
         description = graphene.String(required=True)
         picture = graphene.String(required=True)
         cost = graphene.Float(required=True)
-        suplier = graphene.Field(SupplierType)
-        # team = graphene.Field(TeamType)
+        supplier_id = graphene.ID(required=True)
+        team_id = graphene.ID(required=True)
+        id = graphene.ID(required=True)
     
     asset = graphene.Field(AssetType)
 
     @classmethod
-    def mutate(cls, root, info, id, name, description, picture, cost, supplier, team):
+    def mutate(cls, root, info, id, name, description, picture, cost, supplier_id, team_id):
         asset = Asset.objects.get(pk=id)
         asset.name = name
         asset.description = description
         asset.picture = picture
         asset.cost = cost
-        asset.supplier = supplier
-        asset.team = team
+        asset.supplier_id = supplier_id
+        asset.team_id = team_id
         asset.save()
         # Notice we return an instance of this mutation
         return UpdateAssetMutation(asset=asset)

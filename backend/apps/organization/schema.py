@@ -10,8 +10,7 @@ class OrganizationType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    organization = graphene.Field(OrganizationType,
-                                  id=graphene.ID(required=True))
+    organization = graphene.Field(OrganizationType, id=graphene.ID(required=True))
     organizations = graphene.List(OrganizationType)
 
     def resolve_organization(root, info, id):
