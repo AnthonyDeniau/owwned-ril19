@@ -3,7 +3,7 @@ name: Backend
 on: [push]
 
 jobs:
-  build:
+  build-backend:
 
     runs-on: ubuntu-latest
     env:
@@ -26,3 +26,29 @@ jobs:
     - name: Run tests
       run: python manage.py test
       working-directory: ${{env.backend-directory}}
+
+  build-frontend:
+
+    runs-on: ubuntu-latest
+    env:
+      frontend-directory: ./frontend
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies
+      run: yarn install
+      working-directory: ${{env.frontend-directory}}
+    - name: Run build
+      run: yarn run build --if-present
+      working-directory: ${{env.frontend-directory}}
+    - name: Run tests
+      run: yarn test
+      working-directory: ${{env.frontend-directory}}
