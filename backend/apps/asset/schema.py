@@ -1,6 +1,12 @@
 from graphene_django import DjangoObjectType
 import graphene
 from .models import Asset
+import json
+
+
+class DatasetUser(graphene.ObjectType):
+    name = graphene.String()
+    phone = graphene.String()
 
 
 class AssetType(DjangoObjectType):
@@ -8,9 +14,16 @@ class AssetType(DjangoObjectType):
         model = Asset
         fields = "__all__"
 
+
 class Query(graphene.ObjectType):
-    asset = graphene.Field(AssetType,id=graphene.ID(required=True))
+    asset = graphene.Field(AssetType, id=graphene.ID(required=True))
     assets = graphene.List(AssetType)
+    datausers = graphene.List(DatasetUser)
+
+    def resolve_datausers(root, info):
+        with open("backend/user_dataset.json") as user_dataset:
+            users = json.load(user_dataset)
+            return users["users"]
 
     def resolve_asset(root, info, id):
         try:
@@ -32,13 +45,13 @@ class CreateAssetMutation(graphene.Mutation):
         supplier_id = graphene.ID(required=True)
         team_id = graphene.ID(required=True)
 
-
     # The class attributes define the response of the mutation
     asset = graphene.Field(AssetType)
 
-    @classmethod
+    @ classmethod
     def mutate(cls, root, info, name, description, picture, cost, supplier_id, team_id):
-        asset = Asset.objects.create(name=name, description=description, picture=picture, cost=cost, supplier_id=supplier_id, team_id=team_id)
+        asset = Asset.objects.create(name=name, description=description,
+                                     picture=picture, cost=cost, supplier_id=supplier_id, team_id=team_id)
         # Notice we return an instance of this mutation
         return CreateAssetMutation(asset=asset)
 
@@ -51,7 +64,7 @@ class DeleteAssetMutation(graphene.Mutation):
     # The class attributes define the response of the mutation
     deleted = graphene.Boolean()
 
-    @classmethod
+    @ classmethod
     def mutate(cls, root, info, id):
         deleted = True
         try:
@@ -61,6 +74,7 @@ class DeleteAssetMutation(graphene.Mutation):
             deleted = False
         # Notice we return an instance of this mutation
         return DeleteAssetMutation(deleted=deleted)
+
 
 class UpdateAssetMutation(graphene.Mutation):
     class Arguments:
@@ -72,10 +86,10 @@ class UpdateAssetMutation(graphene.Mutation):
         supplier_id = graphene.ID(required=True)
         team_id = graphene.ID(required=True)
         id = graphene.ID(required=True)
-    
+
     asset = graphene.Field(AssetType)
 
-    @classmethod
+    @ classmethod
     def mutate(cls, root, info, id, name, description, picture, cost, supplier_id, team_id):
         asset = Asset.objects.get(pk=id)
         asset.name = name
@@ -89,10 +103,7 @@ class UpdateAssetMutation(graphene.Mutation):
         return UpdateAssetMutation(asset=asset)
 
 
-
-
 class Mutation(graphene.ObjectType):
     create_asset = CreateAssetMutation.Field()
     update_asset = UpdateAssetMutation.Field()
     delete_asset = DeleteAssetMutation.Field()
-
